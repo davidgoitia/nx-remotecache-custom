@@ -1,13 +1,16 @@
 import { RemoteCache } from "@nrwl/workspace/src/tasks-runner/default-tasks-runner";
 import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
-import { pipeline } from "stream/promises";
+import { pipeline as pipe } from "stream";
+import { promisify } from "util";
 import { extract } from "tar";
 import { getFileNameFromHash } from "./get-file-name-from-hash";
 import { SafeRemoteCacheImplementation } from "./types/safe-remote-cache-implementation";
 
 const COMMIT_FILE_EXTENSION = ".commit";
 const COMMIT_FILE_CONTENT = "true";
+
+const pipeline = promisify(pipe)
 
 const extractFolder = async (
   stream: NodeJS.ReadableStream,
